@@ -9,7 +9,7 @@ git clone git@github.com:zadkhamaya/caritemen.git
 ```
 
 ```bash
-cd digicommerce-batch3
+cd caritemen
 ```
 
 ```bash
