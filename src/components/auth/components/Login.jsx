@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import React from "react";
 
 const Login = () => {
@@ -21,10 +22,10 @@ const Login = () => {
 
     const { message, errorMessage } = await res.json();
     if (errorMessage) {
-      console.log(errorMessage);
+      toast.error("Wrong Username/Password");
       return;
     }
-    console.log(message);
+    toast.success("Login Successfully");
     router.push("/dashboard");
   }
 
