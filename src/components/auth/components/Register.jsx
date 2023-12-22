@@ -53,6 +53,7 @@ const Register = () => {
           <Input name="email" label="Email" isRequired />
           <Input
             label="Password"
+            name="password"
             isRequired
             endContent={
               <button
