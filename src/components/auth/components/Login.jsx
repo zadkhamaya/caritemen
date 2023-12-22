@@ -4,6 +4,9 @@ import { Button, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import React from "react";
+import { EyeFilledIcon } from "./EyeFilledIcon";
+import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
+import { useState } from "react";
 
 const Login = () => {
   const router = useRouter();
@@ -29,13 +32,33 @@ const Login = () => {
     router.push("/dashboard");
   }
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
   return (
     <div className="w-[360px] space-y-6">
       <h2>Login</h2>
       <form onSubmit={LoginHandler}>
         <div className="space-y-2">
-          <Input name="email" placeholder="Email" />
-          <Input name="password" placeholder="Password" type="password" />
+          <Input name="email" label="Email" />
+          <Input
+            label="Password"
+            endContent={
+              <button
+                className="focus:outline-none"
+                type="button"
+                onClick={toggleVisibility}
+              >
+                {isVisible ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
+            type={isVisible ? "text" : "password"}
+          />
           <Button color="primary" className="w-full" type="submit">
             Login
           </Button>

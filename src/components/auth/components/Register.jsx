@@ -2,7 +2,10 @@
 
 import { Button, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { EyeFilledIcon } from "./EyeFilledIcon";
+import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 
 const Register = () => {
   const router = useRouter();
@@ -33,22 +36,38 @@ const Register = () => {
     router.push("/login");
   }
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
   return (
     <div className="w-[360px] space-y-6">
       <h2>Register</h2>
       <form onSubmit={RegisterHandler}>
         <div className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
-            <Input name="firstName" placeholder="First Name" required />
-            <Input name="lastName" placeholder="Last Name" />
+            <Input label="First Name" name="firstName" isRequired />
+            <Input name="lastName" label="Last Name" />
           </div>
-          <Input name="username" placeholder="Username" required />
-          <Input name="email" placeholder="Email" required />
+          <Input name="username" label="Username" isRequired />
+          <Input name="email" label="Email" isRequired />
           <Input
-            name="password"
-            placeholder="Password"
-            type="password"
-            required
+            label="Password"
+            isRequired
+            endContent={
+              <button
+                className="focus:outline-none"
+                type="button"
+                onClick={toggleVisibility}
+              >
+                {isVisible ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
+            type={isVisible ? "text" : "password"}
           />
           <Button color="primary" type="submit" className="w-full">
             Register
