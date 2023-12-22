@@ -9,11 +9,11 @@ const Register = () => {
 
     const firstName = event.target.firstName.value;
     const lastName = event.target.lastName.value;
-    const userName = event.target.userName.value;
+    const username = event.target.userName.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    const res = await fetch("/api/auth/register", {
+    const res = await fetch("/api/users/register", {
       method: "POST",
       body: JSON.stringify({ firstName, lastName, username, email, password }),
     });
@@ -30,10 +30,12 @@ const Register = () => {
             <Input name="firstName" placeholder="First Name" />
             <Input name="lastName" placeholder="Last Name" />
           </div>
-          <Input name="userName" placeholder="Username" />
+          <Input name="username" placeholder="Username" />
           <Input name="email" placeholder="Email" />
           <Input name="password" placeholder="Password" type="password" />
-          <Button type="submit">Register</Button>
+          <Button color="primary" type="submit" className="w-full">
+            Register
+          </Button>
         </div>
       </form>
     </div>

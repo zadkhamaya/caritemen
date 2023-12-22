@@ -1,17 +1,31 @@
 "use client";
 
 import { Button, Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Login = () => {
-  function LoginHandler(event) {
+  const router = useRouter();
+
+  async function LoginHandler(event) {
     event.preventDefault();
     console.log("Login");
 
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email);
-    console.log(password);
+
+    const res = await fetch("/api/users/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+
+    const { message, errorMessage } = await res.json();
+    if (errorMessage) {
+      console.log(errorMessage);
+      return;
+    }
+    console.log(message);
+    router.push("/dashboard");
   }
 
   return (
@@ -21,7 +35,9 @@ const Login = () => {
         <div className="space-y-2">
           <Input name="email" placeholder="Email" />
           <Input name="password" placeholder="Password" type="password" />
-          <Button type="submit">Login</Button>
+          <Button color="primary" className="w-full" type="submit">
+            Login
+          </Button>
         </div>
       </form>
     </div>
