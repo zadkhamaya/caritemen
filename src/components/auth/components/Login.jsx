@@ -44,6 +44,7 @@ const Login = () => {
           <Input name="email" label="Email" />
           <Input
             label="Password"
+            name="password"
             endContent={
               <button
                 className="focus:outline-none"
