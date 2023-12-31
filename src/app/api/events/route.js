@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/utils/prisma";
 import { uploadFile } from "@/lib/uploadFile";
 import slugify from "slugify";
+import { verify } from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export async function GET() {
   try {
@@ -33,15 +35,31 @@ export async function POST(request) {
   const featuredImage = formData.get("featuredImage");
   const images = formData.get("images");
   // const category = formData.get("category");
-  const userId = formData.get("userId");
+  // const userId = formData.get("userId");
+
+  //Get User ID form token
+  const cookieStore = cookies();
+  const token = cookieStore.get("token").value;
+  const decoded = verify(token, process.env.JWT_SECRET);
+  const userId = decoded.id;
+
+  // console.log({
+  //   title,
+  //   date,
+  //   location,
+  //   description,
+  //   featuredImage,
+  //   images,
+  //   userId,
+  // });
 
   let eventId = "";
 
   try {
-    // const allImages = [];
-    // images.forEach((image) => {
-    //   allImages.push(image.name);
-    // });
+    const allImages = [];
+    images.forEach((image) => {
+      allImages.push(image.name);
+    });
     const createEvent = await prisma.event.create({
       data: {
         title,
@@ -50,7 +68,7 @@ export async function POST(request) {
         location,
         description,
         featuredImage: featuredImage.name,
-        // images: allImages,
+        images: allImages,
         user: {
           connect: { id: userId },
         },
@@ -88,7 +106,10 @@ export async function POST(request) {
     console.log(error);
   }
 
-  return NextResponse.json({
-    message: "Event created successfully",
-  });
+  return NextResponse.json(
+    {
+      message: "Event created successfully",
+    },
+    { status: 201 }
+  );
 }
