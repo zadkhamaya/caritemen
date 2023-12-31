@@ -16,18 +16,12 @@ export const CreateEvent = () => {
     const location = event.target.location.value;
     const description = event.target.description.value;
     const featuredImage = event.target.featuredImage.files[0];
-    const images = event.target.images.files;
 
     formData.append("title", title);
     formData.append("date", date);
     formData.append("location", location);
     formData.append("description", description);
     formData.append("featuredImage", featuredImage);
-    formData.append("images", images);
-
-    for (let i = 0; i < images.length; i++) {
-      formData.append("images", images[i]);
-    }
 
     const res = await fetch("/api/events", {
       method: "POST",
@@ -64,7 +58,6 @@ export const CreateEvent = () => {
           </Select>
           <Textarea name="description" label="Event Description" />
           <Input name="featuredImage" type="file" />
-          <Input name="images" type="file" multiple />
           <Button type="submit" color="primary">
             Create Event
           </Button>

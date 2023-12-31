@@ -33,7 +33,7 @@ export async function POST(request) {
   const location = formData.get("location");
   const description = formData.get("description");
   const featuredImage = formData.get("featuredImage");
-  const images = formData.get("images");
+
   // const category = formData.get("category");
   // const userId = formData.get("userId");
 
@@ -56,10 +56,6 @@ export async function POST(request) {
   let eventId = "";
 
   try {
-    const allImages = [];
-    images.forEach((image) => {
-      allImages.push(image.name);
-    });
     const createEvent = await prisma.event.create({
       data: {
         title,
@@ -68,7 +64,6 @@ export async function POST(request) {
         location,
         description,
         featuredImage: featuredImage.name,
-        images: allImages,
         user: {
           connect: { id: userId },
         },
@@ -91,17 +86,6 @@ export async function POST(request) {
       Dir: `events/${eventId}`,
     });
     console.log(uploadFeaturedImage);
-
-    // upload images file
-    images.forEach(async (item) => {
-      const uploadFeaturedImage = await uploadFile({
-        Body: item,
-        Key: item.name,
-        ContentType: item.type,
-        Dir: `events/${eventId}`,
-      });
-      console.log(uploadFeaturedImage);
-    });
   } catch (error) {
     console.log(error);
   }
