@@ -37,17 +37,17 @@ model Event {
   updatedAt DateTime @updatedAt
   userId String
   user User @relation(fields: [userId], references: [id])
-  categoryId String
-  category eventCategory @relation(fields: [categoryId], references: [id])
+  // categoryId String
+  // category eventCategory @relation(fields: [categoryId], references: [id])
 }
 
 // still not sure on this part, lets hope it will works haha :D
-model eventCategory {
-  id String @id @default(uuid())
-  name String
-  description String
-  events Event[]
-}
+// model eventCategory {
+//   id String @id @default(uuid())
+//   name String
+//   description String
+//   events Event[]
+// }
 
 // unfinished, havent put relation many to many between user and participants
 model participants {
