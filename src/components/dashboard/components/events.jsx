@@ -11,7 +11,7 @@ export const Events = () => {
       </div>
       <Link href="/dashboard/events/add">
         <Button shadow color="primary">
-          Add Event
+          Create Event
         </Button>
       </Link>
     </section>

@@ -2,6 +2,7 @@
 
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export const CreateEvent = () => {
@@ -28,9 +29,10 @@ export const CreateEvent = () => {
       body: formData,
     });
 
-    if (res.status === 201) {
-      router.push("/dashboard/events");
-    }
+    res.status === 201
+      ? (toast.success("Event Created Successfully"),
+        setTimeout(() => router.push("/dashboard/events"), 2000))
+      : null;
   }
 
   return (
