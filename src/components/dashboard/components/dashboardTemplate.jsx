@@ -1,11 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import {
-  Activity,
-  ClipboardSignature,
-  CalendarCheck2,
-  LogOut,
-} from "lucide-react";
+import { Activity, ClipboardSignature, CalendarCheck2 } from "lucide-react";
+import { Logout } from "@/components/auth/components/Logout";
 
 export const DashboardTemplate = ({ children }) => {
   return (
@@ -25,10 +21,7 @@ export const DashboardTemplate = ({ children }) => {
             Participate
           </Link>
         </div>
-        <div className="menu">
-          <LogOut />
-          Logout
-        </div>
+        <Logout />
       </aside>
       <section className="w-[calc(100vw-230px)] p-8">
         <div className="max-w-5xl m-auto">{children}</div>
