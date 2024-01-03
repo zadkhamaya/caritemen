@@ -14,12 +14,14 @@ export const CreateEvent = () => {
 
     const title = event.target.title.value;
     const date = event.target.date.value;
+    const category = event.target.category.value;
     const location = event.target.location.value;
     const description = event.target.description.value;
     const featuredImage = event.target.featuredImage.files[0];
 
     formData.append("title", title);
     formData.append("date", date);
+    formData.append("category", category);
     formData.append("location", location);
     formData.append("description", description);
     formData.append("featuredImage", featuredImage);
@@ -47,6 +49,12 @@ export const CreateEvent = () => {
         <section className="space-y-4">
           <Input name="title" label="Event Title" />
           <Input name="date" type="date" />
+          <Select name="category" label="Event Category">
+            <SelectItem key="Sports">Sports</SelectItem>
+            <SelectItem key="Music">Music</SelectItem>
+            <SelectItem key="eSports">eSports</SelectItem>
+            <SelectItem key="Gathering">Gathering</SelectItem>
+          </Select>
           <Select name="location" label="Event Location">
             <SelectItem key="jakarta">Jakarta</SelectItem>
             <SelectItem key="bekasi">Bekasi</SelectItem>
