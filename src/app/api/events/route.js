@@ -30,6 +30,7 @@ export async function POST(request) {
   const formData = await request.formData();
   const title = formData.get("title");
   const date = formData.get("date"); //event date
+  const category = formData.get("category");
   const location = formData.get("location");
   const description = formData.get("description");
   const featuredImage = formData.get("featuredImage");
@@ -61,6 +62,7 @@ export async function POST(request) {
         title,
         slug: slugify(title, { lower: true, replacement: "-" }),
         date,
+        category,
         location,
         description,
         featuredImage: featuredImage.name,
