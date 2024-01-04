@@ -56,8 +56,8 @@ export const CreateEvent = () => {
             <SelectItem key="Gathering">Gathering</SelectItem>
           </Select>
           <Select name="location" label="Event Location">
-            <SelectItem key="jakarta">Jakarta</SelectItem>
-            <SelectItem key="bekasi">Bekasi</SelectItem>
+            <SelectItem key="Jakarta">Jakarta</SelectItem>
+            <SelectItem key="Bekasi">Bekasi</SelectItem>
             <SelectItem key="Bogor">Bogor</SelectItem>
             <SelectItem key="Depok">Depok</SelectItem>
             <SelectItem key="Tangerang">Tangerang</SelectItem>

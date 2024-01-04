@@ -1,5 +1,7 @@
-import { NextResponse } from "next/server";
 import prisma from "@/utils/prisma";
+import { NextResponse } from "next/server";
+import { verify } from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export async function GET() {
   try {
@@ -12,22 +14,79 @@ export async function GET() {
         },
       },
     });
-    return NextResponse.json({
-      data: allParticipants,
-      message: "All participants fetched successfully",
-    });
+    return NextResponse.json(
+      {
+        data: allParticipants,
+        message: "All participants fetched successfully",
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Error fetching participants" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function POST(req) {
-  try {
-    const { userId, eventId } = req.body;
+export async function POST() {
+  //Get User ID form token
+  const cookieStore = cookies();
+  const token = cookieStore.get("token").value;
+  const decoded = verify(token, process.env.JWT_SECRET);
+  const userId = decoded.id;
 
+  let participantsId = "";
+
+  try {
     if (!userId || !eventId) {
-      return res;
+      return NextResponse.json(
+        { error: "Missing userId or eventId" },
+        { status: 400 }
+      );
     }
-  } catch (error) {}
+
+    const existingParticipant = await prisma.participants.findFirst({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    if (existingParticipant) {
+      return NextResponse.json(
+        { error: "User already registered for the event." },
+        { status: 409 }
+      );
+    }
+
+    const newParticipant = await prisma.participants.create({
+      data: {
+        user: {
+          connect: { id: userId },
+        },
+        event: {
+          connect: { id: eventId },
+        },
+      },
+    });
+
+    participantsId = newParticipant.id;
+    console.log(newParticipant);
+
+    return NextResponse.json(
+      {
+        data: newParticipant,
+        message: "User registered for the event successfully",
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
