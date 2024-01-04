@@ -5,7 +5,7 @@ import slugify from "slugify";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export async function GET() {
+export async function GET(request) {
   try {
     const allEvents = await prisma.event.findMany({
       include: {
