@@ -2,7 +2,10 @@ import { apiUrl, imageUrl } from "@/config/apiUrl";
 import Image from "next/image";
 
 async function getData(eventSlug) {
-  const res = await fetch(`${apiUrl}/events?slug=${eventSlug}`);
+  const res = await fetch(`${apiUrl}/events?slug=${eventSlug}`, {
+    method: "GET",
+    cache: "no-store",
+  });
   const data = await res.json();
   return data;
 }
