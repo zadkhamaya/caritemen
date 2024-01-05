@@ -48,7 +48,8 @@ export default async function Page({ params }) {
             <div>Posted by {data.user.username}</div>
             <div>{data.createdAt}</div>
           </div>
-          <div>{data.description}</div>
+          <h3>Event Details</h3>
+          <div className="white-space-prewrap">{data.description}</div>
         </div>
       </div>
     </main>
