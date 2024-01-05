@@ -28,6 +28,7 @@ export async function GET(request) {
       return NextResponse.json({
         data: event,
         message: "Event fetched successfully",
+        cache: "no-store",
       });
     }
 
@@ -43,6 +44,7 @@ export async function GET(request) {
     return NextResponse.json({
       data: events,
       message: "All events fetched successfully",
+      cache: "no-store",
     });
   } catch (error) {
     console.error(error);
