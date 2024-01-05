@@ -6,8 +6,32 @@ import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 export async function GET(request) {
+  const searchParams = request.nextUrl.searchParams;
+  const slug = searchParams.get("slug");
+
+  let events = null;
+
   try {
-    const allEvents = await prisma.event.findMany({
+    if (slug) {
+      const event = await prisma.event.findUnique({
+        where: {
+          slug,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({
+        data: event,
+        message: "Event fetched successfully",
+      });
+    }
+
+    events = await prisma.event.findMany({
       include: {
         user: {
           select: {
@@ -17,7 +41,7 @@ export async function GET(request) {
       },
     });
     return NextResponse.json({
-      data: allEvents,
+      data: events,
       message: "All events fetched successfully",
     });
   } catch (error) {
