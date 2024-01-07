@@ -4,7 +4,7 @@ import React from "react";
 export const Dashboard = () => {
   return (
     <main className="space-y-8">
-      <section>
+      <section className="border-b-8 border-indigo-500 pb-4">
         <h2>Dashboard</h2>
         <p>Hello there!</p>
       </section>

@@ -13,19 +13,27 @@ export const EventCard = ({
   location,
 }) => {
   return (
-    <div>
+    <div className="pt-8 pb-16">
       <Link href={`/${username}/events/${slug}`}>
+      <div className="h-full w-fit rounded-md bg-indigo-50 flex items-center">
+
         <Image
           alt={title}
           src={`${imageUrl}/${id}/${featuredImage}`}
           width={300}
           height={300}
-          className="rounded-lg cursor-pointer hover:scale-105 trasition duration-200"
+          className="rounded-lg cursor-pointer hover:scale-95 trasition duration-200 h-auto w-fit"
         />
+      
+      </div>
       </Link>
-      <div>{title}</div>
-      <div>{date}</div>
-      <div>{location}</div>
+
+      <div>
+        <h5>{title}</h5>
+        <h7>{date}</h7>
+        <div>{location}</div>
+      </div>
+    
     </div>
   );
 };
