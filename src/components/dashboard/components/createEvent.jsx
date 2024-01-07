@@ -38,7 +38,7 @@ export const CreateEvent = () => {
   }
 
   return (
-    <main className="space-y-8">
+    <main className="space-y-8 text-purple-500">
       <section>
         <div>
           <h3>Create Event</h3>
