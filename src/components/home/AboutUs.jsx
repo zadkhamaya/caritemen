@@ -20,32 +20,26 @@ export const AboutUs = () => {
                     title="Our values"
                     className=" text-purple-200"
                 >
-                    <Card>
-                        <CardBody className="text-purple-200 bg-gradient-to-tr from-blue-500 to-purple-500 ">
-                            Community Building, Inclusivity, and Passion for
-                            Exploration
-                        </CardBody>
-                    </Card>
+                    <p className="text-purple-200  ">
+                        Community Building, Inclusivity, and Passion for
+                        Exploration
+                    </p>
                 </Tab>
                 <Tab key="mission" title="Our mission">
-                    <Card>
-                        <CardBody className="text-purple-200 bg-gradient-to-tr from-blue-500 to-purple-500 ">
-                            At CariTemen, we believe in the power of connection
-                            through shared interests. Our mission is to make the
-                            world smaller by bringing like-minded individuals
-                            together.
-                        </CardBody>
-                    </Card>
+                    <p className="text-purple-200  ">
+                        At CariTemen, we believe in the power of connection
+                        through shared interests. Our mission is to make the
+                        world smaller by bringing like-minded individuals
+                        together.
+                    </p>
                 </Tab>
                 <Tab key="story" title="Our Story">
-                    <Card>
-                        <CardBody className="text-purple-200 bg-gradient-to-tr from-blue-500 to-purple-500 ">
-                            Founded by a group of friends who struggled to find
-                            a community, CariTemen was born from the desire to
-                            make connecting with people who share your passions
-                            simple and fun.
-                        </CardBody>
-                    </Card>
+                    <p className="text-purple-200 ">
+                        Founded by a group of friends who struggled to find a
+                        community, CariTemen was born from the desire to make
+                        connecting with people who share your passions simple
+                        and fun.
+                    </p>
                 </Tab>
             </Tabs>
         </div>

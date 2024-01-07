@@ -21,13 +21,16 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   events Event[]
-  participate participants[]
+  reviews Review[]
+  comments Comment[]
+  participants Participants[]
 }
 
 model Event {
   id String @id @default(uuid())
   title String
   slug String @unique
+  category String
   date String
   location String
   description String
@@ -36,24 +39,38 @@ model Event {
   updatedAt DateTime @updatedAt
   userId String
   user User @relation(fields: [userId], references: [id])
-  // categoryId String
-  // category eventCategory @relation(fields: [categoryId], references: [id])
+  reviews Review[]
+  comments        Comment[]
+  participants   Participants[]
 }
 
-// still not sure on this part, lets hope it will works haha :D
-// model eventCategory {
-//   id String @id @default(uuid())
-//   name String
-//   description String
-//   events Event[]
-// }
+model Review {
+  id        String   @id @default(uuid())
+  content   String
+  rating    Int      // assuming a numeric rating
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  createdAt DateTime @default(now())
+}
 
-// unfinished, havent put relation many to many between user and participants
-model participants {
-  id String @id @default(uuid())
-  userId String
-  user User @relation(fields: [userId], references: [id])
-  joinedAt DateTime @default(now())
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Participants {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
 }
 
 //after update this schema dont forget to push:
