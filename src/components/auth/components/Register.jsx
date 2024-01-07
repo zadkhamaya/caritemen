@@ -76,7 +76,7 @@ const Register = () => {
                         }
                         type={isVisible ? "text" : "password"}
                     />
-                    <Button color="primary" type="submit" className="w-full">
+                    <Button color="secondary" type="submit" className="w-full">
                         Register
                     </Button>
                 </div>
