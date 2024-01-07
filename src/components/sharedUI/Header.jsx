@@ -9,13 +9,14 @@ import {
     NavbarMenuItem,
     NavbarMenuToggle,
     NavbarItem,
-    Link,
     Button,
     Dropdown,
     DropdownTrigger,
     DropdownMenu,
     DropdownItem,
 } from "@nextui-org/react";
+import Link from "next/link";
+
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -61,7 +62,7 @@ export const Header = () => {
                 <NavbarItem>
                     <Link
                         color="foreground"
-                        href="#how"
+                        href="/#how"
                         className="text-purple-500"
                     >
                         How It Works
@@ -70,7 +71,7 @@ export const Header = () => {
                 <NavbarItem>
                     <Link
                         color="foreground"
-                        href="#about"
+                        href="/#about"
                         className="text-purple-500"
                     >
                         About Us
