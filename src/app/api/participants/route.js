@@ -30,14 +30,14 @@ export async function GET() {
   }
 }
 
-export async function POST() {
+export async function POST(req) {
+  const { eventId } = await req.json();
+
   //Get User ID form token
   const cookieStore = cookies();
   const token = cookieStore.get("token").value;
   const decoded = verify(token, process.env.JWT_SECRET);
   const userId = decoded.id;
-
-  let participantsId = "";
 
   try {
     if (!userId || !eventId) {
@@ -71,9 +71,6 @@ export async function POST() {
         },
       },
     });
-
-    participantsId = newParticipant.id;
-    console.log(newParticipant);
 
     return NextResponse.json(
       {

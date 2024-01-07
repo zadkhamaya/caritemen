@@ -1,3 +1,4 @@
+import { SingleEvent } from "@/components/events/singleEvent";
 import { apiUrl, imageUrl } from "@/config/apiUrl";
 import Image from "next/image";
 
@@ -10,6 +11,14 @@ async function getData(eventSlug) {
   return data;
 }
 
+async function getComments(eventSlug) {
+  const res = await fetch(`${apiUrl}/comments?slug=${eventSlug}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+  const data = await res.json();
+  return data;
+}
 // function formatDate(dateString) {
 //   const options = {
 //     weekday: "long",
@@ -27,34 +36,9 @@ async function getData(eventSlug) {
 export default async function Page({ params }) {
   const { username, eventSlug } = params;
   const { data } = await getData(eventSlug);
+  const { data: comments } = await getComments(eventSlug);
 
-  console.log(data);
+  console.log(comments);
 
-  return (
-    <main>
-      <div className="flex justify-around gap-4">
-        <Image
-          alt={data.title}
-          src={`${imageUrl}/${data.id}/${data.featuredImage}`}
-          width={400}
-          height={400}
-          className="rounded-lg"
-        />
-        <div>
-          <h1>{data.title}</h1>
-          <div className="flex space-x-2">
-            <div>{data.location}, </div>
-            <div>{data.date}</div>
-          </div>
-          <div>{data.category}</div>
-          <div>
-            <div>Posted by {data.user.username}</div>
-            <div>{data.createdAt}</div>
-          </div>
-          <h3>Event Details</h3>
-          <div className="white-space-prewrap">{data.description}</div>
-        </div>
-      </div>
-    </main>
-  );
+  return <SingleEvent data={data} />;
 }

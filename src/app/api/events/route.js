@@ -23,6 +23,7 @@ export async function GET(request) {
               username: true,
             },
           },
+          participants: true,
         },
       });
       return NextResponse.json({
@@ -94,6 +95,9 @@ export async function POST(request) {
         featuredImage: featuredImage.name,
         user: {
           connect: { id: userId },
+        },
+        participants: {
+          connect: { userId },
         },
       },
     });
