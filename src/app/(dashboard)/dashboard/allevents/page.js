@@ -22,7 +22,7 @@ export default async function Page() {
   const { data } = await getData();
 
   return (
-    <main>
+    <main className="flex flex-col space-y-8">
       <Events />
       <AllEvent eventsData={data} />
     </main>
