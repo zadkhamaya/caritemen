@@ -5,8 +5,8 @@ import { Logout } from "@/components/auth/components/Logout";
 
 export const DashboardTemplate = ({ children }) => {
   return (
-    <main className="flex h-screen">
-      <aside className="w-[230px] border-r-2 p-8 flex flex-col justify-between">
+    <main className="flex min-h-screen max-h-full">
+      <aside className="w-[230px] border-r-2 p-8 flex flex-col justify-between bg-indigo-50">
         <div>
           <Link className="menu" href="/dashboard">
             <Activity />
