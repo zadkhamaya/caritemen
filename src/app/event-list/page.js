@@ -1,3 +1,5 @@
+
+
 import Search from "@/components/events/Search";
 import React from "react";
 import { apiUrl, imageUrl } from "@/config/apiUrl";
@@ -16,7 +18,7 @@ export default async function EventList() {
 
     return (
         <>
-            <Search />
+            {/* <Search /> */}
             <section className="mt-12">
                 <AllEvent eventsData={data} />
             </section>
