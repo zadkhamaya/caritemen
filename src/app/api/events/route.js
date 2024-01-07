@@ -8,8 +8,7 @@ import { cookies } from "next/headers";
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams;
   const slug = searchParams.get("slug");
-
-  let events = null;
+  const userId = searchParams.get("userId");
 
   try {
     if (slug) {
@@ -23,17 +22,34 @@ export async function GET(request) {
               username: true,
             },
           },
-          participants: true,
         },
       });
       return NextResponse.json({
         data: event,
         message: "Event fetched successfully",
-        cache: "no-store",
       });
     }
 
-    events = await prisma.event.findMany({
+    if (userId) {
+      const event = await prisma.event.findMany({
+        where: {
+          userId,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({
+        data: event,
+        message: "Event fetched successfully",
+      });
+    }
+
+    const events = await prisma.event.findMany({
       include: {
         user: {
           select: {
@@ -62,24 +78,11 @@ export async function POST(request) {
   const description = formData.get("description");
   const featuredImage = formData.get("featuredImage");
 
-  // const category = formData.get("category");
-  // const userId = formData.get("userId");
-
   //Get User ID form token
   const cookieStore = cookies();
   const token = cookieStore.get("token").value;
   const decoded = verify(token, process.env.JWT_SECRET);
   const userId = decoded.id;
-
-  // console.log({
-  //   title,
-  //   date,
-  //   location,
-  //   description,
-  //   featuredImage,
-  //   images,
-  //   userId,
-  // });
 
   let eventId = "";
 
@@ -93,12 +96,14 @@ export async function POST(request) {
         location,
         description,
         featuredImage: featuredImage.name,
-        user: {
-          connect: { id: userId },
-        },
-        participants: {
-          connect: { userId },
-        },
+        userId,
+      },
+    });
+
+    await prisma.participants.create({
+      data: {
+        eventId: createEvent.id,
+        userId,
       },
     });
 
@@ -106,6 +111,12 @@ export async function POST(request) {
     console.log(createEvent);
   } catch (error) {
     console.log(error);
+    return NextResponse.json(
+      {
+        message: "Event created failed",
+      },
+      { status: 500 }
+    );
   }
 
   // Send Images to AWS S3

@@ -1,12 +1,17 @@
 import { Events } from "@/components/dashboard/components/events";
 import { AllEvent } from "@/components/events/allEvent";
 import { apiUrl, imageUrl } from "@/config/apiUrl";
-
 import React from "react";
+import { cookies } from "next/headers";
+import { verify } from "jsonwebtoken";
 
 async function getData() {
-  const res = await fetch(`${apiUrl}/events`, {
-    method: "GET",
+  const cookieStore = cookies();
+  const token = cookieStore.get("token").value;
+  const decoded = verify(token, process.env.JWT_SECRET);
+  const userId = decoded.id;
+
+  const res = await fetch(`${apiUrl}/events?userId=${userId}`, {
     cache: "no-store",
   });
   const data = await res.json();
@@ -16,7 +21,6 @@ async function getData() {
 export default async function Page() {
   const { data } = await getData();
 
-  console.log(data);
   return (
     <main>
       <Events />
