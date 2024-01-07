@@ -19,26 +19,11 @@ async function getComments(eventSlug) {
   const data = await res.json();
   return data;
 }
-// function formatDate(dateString) {
-//   const options = {
-//     weekday: "long",
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   };
-//   return new Intl.DateTimeFormat("en-US", options).format(new Date(dateString));
-// }
-
-// let dateStr = "";
-// const formattedDate = formatDate(dateStr);
-// console.log(formattedDate); // Outputs something like "Friday, January 4, 2024"
 
 export default async function Page({ params }) {
   const { username, eventSlug } = params;
   const { data } = await getData(eventSlug);
   const { data: comments } = await getComments(eventSlug);
 
-  console.log(comments);
-
-  return <SingleEvent data={data} />;
+  return <SingleEvent data={data} comments={comments} />;
 }

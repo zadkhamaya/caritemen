@@ -1,15 +1,24 @@
 import prisma from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request) {
   const searchParams = request.nextUrl.searchParams;
   const slug = searchParams.get("slug");
-  console.log(slug);
+  console.log({ slug });
 
   try {
     const allComments = await prisma.comment.findMany({
       where: {
-        slug,
+        event: {
+          slug,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
       },
     });
 
@@ -34,10 +43,7 @@ export async function POST() {
 
   try {
     if (!userId || !eventId) {
-      return NextResponse.json(
-        { error: "Missing userId or eventId" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing userId or eventId" }, { status: 400 });
     }
 
     const newComment = await prisma.comment.create({
@@ -61,9 +67,6 @@ export async function POST() {
     );
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
