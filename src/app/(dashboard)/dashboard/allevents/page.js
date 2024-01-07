@@ -11,7 +11,7 @@ async function getData() {
   const decoded = verify(token, process.env.JWT_SECRET);
   const userId = decoded.id;
 
-  const res = await fetch(`${apiUrl}/events?userId=${userId}`, {
+  const res = await fetch(`${apiUrl}/events`, {
     cache: "no-store",
   });
   const data = await res.json();
