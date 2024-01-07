@@ -5,9 +5,51 @@ import slugify from "slugify";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export async function GET() {
+export async function GET(request) {
+  const searchParams = request.nextUrl.searchParams;
+  const slug = searchParams.get("slug");
+  const userId = searchParams.get("userId");
+
   try {
-    const allEvents = await prisma.event.findMany({
+    if (slug) {
+      const event = await prisma.event.findUnique({
+        where: {
+          slug,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({
+        data: event,
+        message: "Event fetched successfully",
+      });
+    }
+
+    if (userId) {
+      const event = await prisma.event.findMany({
+        where: {
+          userId,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({
+        data: event,
+        message: "Event fetched successfully",
+      });
+    }
+
+    const events = await prisma.event.findMany({
       include: {
         user: {
           select: {
@@ -17,8 +59,9 @@ export async function GET() {
       },
     });
     return NextResponse.json({
-      data: allEvents,
+      data: events,
       message: "All events fetched successfully",
+      cache: "no-store",
     });
   } catch (error) {
     console.error(error);
@@ -30,28 +73,16 @@ export async function POST(request) {
   const formData = await request.formData();
   const title = formData.get("title");
   const date = formData.get("date"); //event date
+  const category = formData.get("category");
   const location = formData.get("location");
   const description = formData.get("description");
   const featuredImage = formData.get("featuredImage");
-
-  // const category = formData.get("category");
-  // const userId = formData.get("userId");
 
   //Get User ID form token
   const cookieStore = cookies();
   const token = cookieStore.get("token").value;
   const decoded = verify(token, process.env.JWT_SECRET);
   const userId = decoded.id;
-
-  // console.log({
-  //   title,
-  //   date,
-  //   location,
-  //   description,
-  //   featuredImage,
-  //   images,
-  //   userId,
-  // });
 
   let eventId = "";
 
@@ -61,12 +92,18 @@ export async function POST(request) {
         title,
         slug: slugify(title, { lower: true, replacement: "-" }),
         date,
+        category,
         location,
         description,
         featuredImage: featuredImage.name,
-        user: {
-          connect: { id: userId },
-        },
+        userId,
+      },
+    });
+
+    await prisma.participants.create({
+      data: {
+        eventId: createEvent.id,
+        userId,
       },
     });
 
@@ -74,6 +111,12 @@ export async function POST(request) {
     console.log(createEvent);
   } catch (error) {
     console.log(error);
+    return NextResponse.json(
+      {
+        message: "Event created failed",
+      },
+      { status: 500 }
+    );
   }
 
   // Send Images to AWS S3

@@ -71,6 +71,7 @@ model Participants {
   user      User     @relation(fields: [userId], references: [id])
   eventId   String
   event     Event    @relation(fields: [eventId], references: [id])
+  joinedAt  DateTime @default(now())
 }
 
 //after update this schema dont forget to push:
