@@ -17,16 +17,22 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 
-
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-    const menuItems = ["Home", "Events", "About Us"];
+    const menuItems = ["Home", "Events", "How It Works", "About Us"];
+
+    const hrefMapping = {
+        Home: "/",
+        Events: "/event-list",
+        "How It Works": "/#how",
+        "About Us": "/#about",
+    };
 
     return (
         <Navbar
             onMenuOpenChange={setIsMenuOpen}
-            className="border-3 border-purple-500 rounded-full"
+            className="border-3 border-purple-500 rounded-full w-[90%] m-auto md:w-full"
         >
             <NavbarContent>
                 <NavbarMenuToggle
@@ -101,13 +107,13 @@ export const Header = () => {
                         <Link
                             color={
                                 index === 2
-                                    ? "primary"
+                                    ? "secondary"
                                     : index === menuItems.length - 1
                                     ? "danger"
                                     : "foreground"
                             }
                             className="w-full"
-                            href="#"
+                            href={hrefMapping[item]}
                             size="lg"
                         >
                             {item}
